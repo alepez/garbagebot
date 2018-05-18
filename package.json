@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/alepez/garbagebot/issues"
   },
-  "homepage": "https://github.com/alepez/garbagebot#readme"
+  "homepage": "https://github.com/alepez/garbagebot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  }
 }
