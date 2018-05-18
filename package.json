@@ -1,0 +1,23 @@
+{
+  "name": "garbagebot",
+  "version": "0.0.1",
+  "description": "If your wife doesn't ask you for taking out the trash, garbagebot does!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alepez/garbagebot.git"
+  },
+  "keywords": [
+    "garbage",
+    "trash"
+  ],
+  "author": "Alessandro Pezzato <alessandro.pezzato@gmail.com> (http://pezzato.net)",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/alepez/garbagebot/issues"
+  },
+  "homepage": "https://github.com/alepez/garbagebot#readme"
+}
