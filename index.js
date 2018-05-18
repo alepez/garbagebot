@@ -59,15 +59,11 @@ const readAllFiles = () => {
 };
 
 const subscribers = readAllFiles();
-console.log(subscribers);
 
 bot.on('message', async (msg) => {
   const { text, chat } = msg;
 
-  console.log(JSON.stringify(msg));
-
   let sub = subscribers[chat.id];
-  console.log(sub);
 
   if (text === '/start') {
     if (sub) {
