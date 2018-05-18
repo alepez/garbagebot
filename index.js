@@ -8,16 +8,30 @@ const dbDir = process.env.GARBAGEBOT_DB_DIR;
 const bot = new Bot(token, { polling: true });
 
 const Subscriber = function (msg) {
-  console.log(msg);
   const { chat } = msg;
   const filename = path.join(dbDir, String(chat.id));
 
+  // TODO Calendar should be choosen by user
   this.data = {
-    chat
+    chat,
+    calendar: 'italy/trebaseleghe/zone-b'
+  };
+
+  const calendar = require(path.join(__dirname, './lib/cal/', this.data.calendar + '.js'));
+
+  const send = (msg) => {
+    bot.sendMessage(chat.id, msg);
+  };
+
+  this.request = ({ cmd }) => {
+    if (cmd === 'tomorrow') {
+      const tomorrow = new Date((24 * 3600 * 1000) + (new Date().getTime()));
+      const todo = calendar.getByDate(tomorrow);
+      send(todo.join());
+    }
   };
 
   this.save = () => {
-    console.log(filename);
     return new Promise((resolve, reject) => {
       fs.writeFile(filename, JSON.stringify(this.data, null, 2), (err) => {
         if (err) return reject();
@@ -39,7 +53,7 @@ const readAllFiles = () => {
   const files = listAllFiles();
   const records = {};
   files.forEach(filename => {
-    records[filename] = JSON.parse(readFile(filename));
+    records[filename] = new Subscriber(JSON.parse(readFile(filename)));
   });
   return records;
 };
@@ -52,14 +66,23 @@ bot.on('message', async (msg) => {
 
   console.log(JSON.stringify(msg));
 
+  let sub = subscribers[chat.id];
+  console.log(sub);
+
   if (text === '/start') {
-    if (subscribers[chat.id]) {
+    if (sub) {
       bot.sendMessage(chat.id, "Already registered");
       return;
     }
 
-    const sub = new Subscriber(msg);
+    sub = new Subscriber(msg);
     subscribers[chat.id] = sub;
     await sub.save();
+    return;
+  }
+
+  if (text === '/tomorrow' || text === '/tom') {
+    sub.request({ cmd: 'tomorrow' })
+    return;
   }
 });
